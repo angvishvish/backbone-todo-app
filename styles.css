@@ -3,3 +3,7 @@
   font-size: 1.5em;
   cursor: pointer;
 }
+
+input[type="checkbox"]:checked + span {
+  text-decoration: line-through;
+}

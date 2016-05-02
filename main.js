@@ -2,7 +2,7 @@
   var App = new Marionette.Application();
 
   App.addRegions({
-     'mainRegion': '#main' 
+    'mainRegion': '#main' 
   });
 
   App.module('Todo', function(Todo, App, Backbone, Marionette, $, _){
@@ -17,11 +17,18 @@
       tagName: 'li',
       className: 'list-group-item',
       triggers: {
-        'click .fa-times-circle': 'done'
+        'click .fa-times-circle'   : 'done'
       },
       render: function () {
-        var innerHtml = '<span>' + this.model.get('name') + '</span>\
-                      <i class="fa fa-times-circle pull-right" aria-hidden="true"></i>';
+        var innerHtml = '\
+            <div class="checkbox">\
+              <label class="control-label">\
+                <input type="checkbox">\
+                <span>' + this.model.get('name') + '</span> - \
+                <small>' + moment(this.model.get('currentDate')).format("DD MMM") + '</small>\
+              </label>\
+              <i class="fa fa-times-circle pull-right" aria-hidden="true"></i>\
+            </div>';
         this.$el.html(innerHtml);
       }
     });
@@ -49,7 +56,11 @@
           if (this.ui.myInput.val() == '') {
             return;
           }
-          this.collection.add({name: this.ui.myInput.val()});
+          this.collection.add({
+            'name'       : this.ui.myInput.val(),
+            'currentDate': moment(),
+            'completed'  : false 
+          });
           this.render();
           this.ui.myInput.focus();
           this.reverseList;
